@@ -3,18 +3,18 @@ using System.Text.RegularExpressions;
 
 namespace EF3.EntityModels
 {
-	public class Studente
+	public class Student
 	{
-		public Studente(string matricola)
+		public Student(string freshman)
 		{
-			Matricola = matricola;
+			Freshman = freshman;
 		}
 
-		public string Matricola { get; }
-		public string Nome { get; set; }
-		public string Cognome { get; set; }
+		public string Freshman { get; }
+		public string Name { get; set; }
+		public string Surname { get; set; }
 		public string Email { get; private set; }
-		public Indirizzo Indirizzo { get; set; }
+		public Address Address { get; set; }
 
 		public void SetMail(string mail)
 		{
@@ -25,19 +25,19 @@ namespace EF3.EntityModels
 			if (isEmail)
 				Email = mail;
 			else
-				throw new ArgumentException($"{mail} non è un indirizzo di posta elettronica");
+				throw new ArgumentException($"{mail} is not email");
 		}
 	}
 
-	public class Indirizzo
+	public class Address
 	{
-		public Indirizzo(string strada, int cap)
+		public Address(string street, int cap)
 		{
-			Strada = strada;
+			Street = street;
 			Cap = cap;
 		}
-		public string Strada { get;  }
+		public string Street { get;  }
 		public int Cap { get; }
-		public string Comune { get; set; }
+		public string Residence { get; set; }
 	}
 }

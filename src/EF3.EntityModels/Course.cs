@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace EF3.EntityModels
+{
+	public class Course
+	{
+		public Course(string name, string teacher, int creditsNumber)
+		{
+			Name = name;
+			Teacher = teacher;
+			CreditsNumber = creditsNumber;
+		}
+
+		public string Name { get; }
+		public string Teacher { get; }
+		public int CreditsNumber { get; }
+		public CourseType CourseType { get; set; }
+		public HashSet<Exam> Exams { get; private set; }
+		public void AddExam(Exam exam)
+		{
+			if (!Exams.Any(x => x.Code == exam.Code))
+				Exams.Add(exam);
+		}
+		public ExtraCredit ExtraCredits { get; set; }
+	}
+
+	public enum CourseType
+	{
+		Mandatory,
+		Optional
+	}
+
+	public class ExtraCredit
+	{
+		public string Name { get; set; }
+		public short Credits { get; set; }
+		public int HoursSum { get; set; }
+	}
+}
