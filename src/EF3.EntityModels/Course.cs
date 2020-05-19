@@ -13,12 +13,12 @@ namespace EF3.EntityModels
 			Teacher = teacher;
 			CreditsNumber = creditsNumber;
 		}
-
+		public Guid Id { get; }
 		public string Name { get; }
 		public string Teacher { get; }
 		public int CreditsNumber { get; }
 		public CourseType CourseType { get; set; }
-		public HashSet<Exam> Exams { get; private set; }
+		public HashSet<Exam> Exams { get; private set; } = new HashSet<Exam>();
 		public void AddExam(Exam exam)
 		{
 			if (!Exams.Any(x => x.Code == exam.Code))

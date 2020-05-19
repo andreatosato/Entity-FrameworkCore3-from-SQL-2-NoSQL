@@ -38,6 +38,6 @@ namespace EF3.EntityModels
 		}
 		public string Street { get;  }
 		public int Cap { get; }
-		public string Residence { get; set; }
+		public string City { get; set; }
 	}
 }

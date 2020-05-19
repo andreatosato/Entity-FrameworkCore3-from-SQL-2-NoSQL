@@ -18,7 +18,7 @@ namespace EF3.EntityModels
 		public DateTimeOffset ExamDate { get; }
 		public string Classroom { get; set; }
 
-		public HashSet<Student> Students { get; private set; }
+		public HashSet<Student> Students { get; private set; } = new HashSet<Student>();
 		public void AddStudent(Student student)
 		{
 			if(!Students.Any(x => x.Freshman == student.Freshman))
