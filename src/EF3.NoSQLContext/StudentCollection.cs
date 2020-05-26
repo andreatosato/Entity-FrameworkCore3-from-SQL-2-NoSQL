@@ -1,27 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
-namespace EF3.EntityModels
+namespace EF3.NoSQLContext
 {
-	public class Student
+	public class StudentCollection
 	{
-		private readonly DateTimeOffset _createDate;
-		private readonly DateTimeOffset _updateDate;
-		public Student(string freshman)
+		public StudentCollection(string freshman)
 		{
 			Freshman = freshman;
-			_createDate = DateTimeOffset.UtcNow;
-			_updateDate = DateTimeOffset.UtcNow;
 		}
 
 		public string Freshman { get; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string Email { get; private set; }
-		public Address Address { get; set; }
-
-		public DateTimeOffset CreateDate => _createDate;
-		public DateTimeOffset UpdateDate => _updateDate;
+		public AddressCollection Address { get; set; }
 
 		public void SetMail(string mail)
 		{
@@ -34,16 +29,17 @@ namespace EF3.EntityModels
 			else
 				throw new ArgumentException($"{mail} is not email");
 		}
+		
 	}
 
-	public class Address
+	public class AddressCollection
 	{
-		public Address(string street, int cap)
+		public AddressCollection(string street, int cap)
 		{
 			Street = street;
 			Cap = cap;
 		}
-		public string Street { get;  }
+		public string Street { get; }
 		public int Cap { get; }
 		public string City { get; set; }
 	}

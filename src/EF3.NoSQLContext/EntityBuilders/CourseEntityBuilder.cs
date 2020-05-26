@@ -1,7 +1,9 @@
 ﻿using EF3.EntityModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EF3.NoSQLContext.EntityBuilders
 {
@@ -28,19 +30,25 @@ namespace EF3.NoSQLContext.EntityBuilders
 			builder.OwnsMany<Exam>(e => e.Exams, t =>
 			{
 				t.Property(e => e.Code);
-				t.Property(e => e.ExamType);
+				// https://docs.microsoft.com/it-it/ef/core/modeling/value-conversions
+				t.Property(e => e.ExamType)				
+				 .HasConversion<string>();
+				//.HasConversion(new EnumToStringConverter<ExamType>());
 				t.Property(e => e.ExamDate);
 
 				t.OwnsMany<Student>(s => s.Students, f =>
 				{
 					f.Property(s => s.Freshman);
+					f.Property(e => e.CreateDate).HasField("_createDate");
+					// https://docs.microsoft.com/it-it/ef/core/modeling/backing-field?tabs=data-annotations
+					// .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
+					f.Property(e => e.UpdateDate).HasField("_updateDate");
 
 					f.OwnsOne(a => a.Address,
 					a =>
 					{
 						a.ToJsonProperty("Indirizzi");
-						a.Property(c => c.Street);
-						a.Property(c => c.City);
+						a.Property(c => c.Street).ToJsonProperty("Via");
 						a.Property(c => c.Cap);
 					});
 				});

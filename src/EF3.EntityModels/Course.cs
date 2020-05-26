@@ -24,7 +24,7 @@ namespace EF3.EntityModels
 			if (!Exams.Any(x => x.Code == exam.Code))
 				Exams.Add(exam);
 		}
-		public ExtraCredit ExtraCredits { get; set; }
+		public ExtraCredit ExtraCredits { get; set; } = new ExtraCredit();
 	}
 
 	public enum CourseType

@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EF3.NoSQLContext
 {
 	public class SampleContext : DbContext
-	{
-		
+	{		
 		public SampleContext(DbContextOptions options)
 			: base(options)
 		{
@@ -14,10 +13,12 @@ namespace EF3.NoSQLContext
 		}
 
 		public DbSet<Course> Courses { get; set; }
+		public DbSet<StudentCollection> Students { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyConfiguration(new CourseEntityBuilder());
+			modelBuilder.ApplyConfiguration(new StudentCollectionEntityBuilder());
 		}
 	}
 }

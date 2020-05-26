@@ -1,8 +1,10 @@
 ﻿using EF3.EntityModels;
 using EF3.NoSQLContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Cosmos.Storage.Internal;
 using System;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace EF3.NoSQLApp
 {
@@ -14,7 +16,13 @@ namespace EF3.NoSQLApp
 			optionsBuilder.UseCosmos(
 				accountEndpoint: "https://localhost:8081",
 				accountKey: "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-				databaseName: "sample-db");
+				databaseName: "sample-db",
+				// https://docs.microsoft.com/it-it/ef/core/miscellaneous/connection-resiliency
+				// https://docs.microsoft.com/it-it/dotnet/architecture/microservices/implement-resilient-applications/implement-resilient-entity-framework-core-sql-connections
+				options =>
+				{
+					options.ExecutionStrategy(d => new CosmosExecutionStrategy(d));
+				});
 			optionsBuilder.EnableSensitiveDataLogging();
 			using (SampleContext db = new SampleContext(optionsBuilder.Options))
 			{
@@ -39,8 +47,22 @@ namespace EF3.NoSQLApp
 				var teacher = "Mario Rossi";
 				var analisi1 = new Course("Analisi 1", teacher, 12);
 				analisi1.AddExam(exam);
+				analisi1.ExtraCredits = new ExtraCredit
+				{
+					Credits = 10,
+					HoursSum = 150,
+					Name = "Workshop fisica"
+				};
 				#endregion
 
+				#region [StudentCollection]
+				var marioRossiCollection = new StudentCollection("2020-1234");
+				marioRossiCollection.Name = "Mario";
+				marioRossiCollection.Surname = "Rossi";
+				marioRossiCollection.SetMail("mario.rossi@unitest.it");
+				marioRossiCollection.Address = new AddressCollection("Via Verdi, 24", 20121) { City = "Milano" };
+				db.Students.Add(marioRossiCollection);
+				#endregion
 
 
 				db.Courses.Add(analisi1);
