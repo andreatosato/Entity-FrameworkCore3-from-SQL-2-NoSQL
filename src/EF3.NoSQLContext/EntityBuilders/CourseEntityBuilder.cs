@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
-using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 
 namespace EF3.NoSQLContext.EntityBuilders
 {
@@ -16,17 +15,25 @@ namespace EF3.NoSQLContext.EntityBuilders
 			builder.ToContainer("Courrrrse")
 				.HasNoDiscriminator();
 
-			
 
 			builder.Property(x => x.Name);
 			builder.Property(x => x.Teacher);
 			builder.Property(x => x.CreditsNumber);
-			builder.OwnsOne<ExtraCredit>(e => e.ExtraCredits, t =>
+
+			JsonSerializerOptions serializerOptions = new JsonSerializerOptions()
 			{
-				t.Property(x => x.Name);
-				t.Property(x => x.HoursSum);
-				t.Property(x => x.Credits);
-			});
+				IgnoreNullValues = true,
+				PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+				WriteIndented = false
+			};
+			var converter = new ValueConverter<ExtraCredit, string>(
+				v => JsonSerializer.Serialize(v, serializerOptions),
+				v => JsonSerializer.Deserialize<ExtraCredit>(v, serializerOptions));
+			builder.Property(x => x.ExtraCredits)
+				   .HasConversion(converter);
+
+
+			builder.HasQueryFilter(t => t.IsExpired == false);
 			builder.OwnsMany<Exam>(e => e.Exams, t =>
 			{
 				t.Property(e => e.Code);
@@ -44,12 +51,14 @@ namespace EF3.NoSQLContext.EntityBuilders
 					// .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
 					f.Property(e => e.UpdateDate).HasField("_updateDate");
 
+					// https://docs.microsoft.com/it-it/ef/core/modeling/owned-entities#implicit-keys
 					f.OwnsOne(a => a.Address,
 					a =>
 					{
 						a.ToJsonProperty("Indirizzi");
 						a.Property(c => c.Street).ToJsonProperty("Via");
 						a.Property(c => c.Cap);
+						a.WithOwner();
 					});
 				});
 			});

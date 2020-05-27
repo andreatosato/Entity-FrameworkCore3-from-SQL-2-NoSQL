@@ -3,6 +3,7 @@ using EF3.NoSQLContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Cosmos.Storage.Internal;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Sources;
 
@@ -67,6 +68,27 @@ namespace EF3.NoSQLApp
 
 				db.Courses.Add(analisi1);
 				await db.SaveChangesAsync();
+
+				// Print
+				PrintCourse(db.Courses);
+
+				var course = await db.Courses.FindAsync(analisi1.Id);
+				course.SetExpired();
+				await db.SaveChangesAsync();
+
+				PrintCourse(db.Courses);
+
+			}
+		}
+
+		private static void PrintCourse(DbSet<Course> courses)
+		{
+			foreach (var item in courses)
+			{
+				Console.WriteLine($"Name: {item.Name}");
+				Console.WriteLine($"Id: {item.Id}");
+				Console.WriteLine($"CourseType: {item.CourseType}");
+				Console.WriteLine($"IsExpired: {item.IsExpired}");
 			}
 		}
 	}

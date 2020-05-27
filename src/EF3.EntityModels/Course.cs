@@ -25,6 +25,12 @@ namespace EF3.EntityModels
 				Exams.Add(exam);
 		}
 		public ExtraCredit ExtraCredits { get; set; } = new ExtraCredit();
+		public byte[] RowVersion { get; }
+		public void SetExpired()
+		{
+			IsExpired = true;
+		}
+		public bool IsExpired { get; private set; }
 	}
 
 	public enum CourseType

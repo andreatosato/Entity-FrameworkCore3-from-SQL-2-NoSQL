@@ -35,10 +35,11 @@ Cambiare la mail universitaria di uno studente.
 # EF Core Cosmos
 1. Entity Configuration
     * Configurare il DbContext
-2. Migrations
-3. Include (no join)
+2. Migrations (Non ci sono)
+3. Include (no join) (Automatiche)
 4. ValueConverter automatico Enum to String
 5. Owned Entity
 6. Utilizzare il client nativo 
-7. Retry (ConnectionPolicy.RetryOptions) ?
-8. Transazioni
+7. Retry (Cosmos Default Strategy)
+8. Transazioni (No)
+9. Query Filter
