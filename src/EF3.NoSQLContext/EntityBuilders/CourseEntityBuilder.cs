@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 namespace EF3.NoSQLContext.EntityBuilders
@@ -11,7 +12,8 @@ namespace EF3.NoSQLContext.EntityBuilders
 		public void Configure(EntityTypeBuilder<Course> builder)
 		{
 			builder.HasKey(x => x.Id);
-			builder.Property(p => p.Id).ValueGeneratedOnAdd();
+			builder.Property(p => p.Id)
+				.ValueGeneratedOnAdd();
 			builder.ToContainer("Courrrrse")
 				.HasNoDiscriminator();
 
@@ -50,6 +52,7 @@ namespace EF3.NoSQLContext.EntityBuilders
 					// https://docs.microsoft.com/it-it/ef/core/modeling/backing-field?tabs=data-annotations
 					// .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
 					f.Property(e => e.UpdateDate).HasField("_updateDate");
+					f.WithOwner().HasPrincipalKey(c => c.Code);
 
 					// https://docs.microsoft.com/it-it/ef/core/modeling/owned-entities#implicit-keys
 					f.OwnsOne(a => a.Address,
@@ -58,7 +61,9 @@ namespace EF3.NoSQLContext.EntityBuilders
 						a.ToJsonProperty("Indirizzi");
 						a.Property(c => c.Street).ToJsonProperty("Via");
 						a.Property(c => c.Cap);
-						a.WithOwner();
+
+						// WARNING
+						a.WithOwner().HasPrincipalKey(r => r.Freshman);
 					});
 				});
 			});

@@ -22,9 +22,11 @@ namespace EF3.NoSQLApp
 				// https://docs.microsoft.com/it-it/dotnet/architecture/microservices/implement-resilient-applications/implement-resilient-entity-framework-core-sql-connections
 				options =>
 				{
+					// https://github.com/dotnet/efcore/blob/master/src/EFCore.Cosmos/Storage/Internal/CosmosExecutionStrategy.cs
 					options.ExecutionStrategy(d => new CosmosExecutionStrategy(d));
 				});
 			optionsBuilder.EnableSensitiveDataLogging();
+
 			using (SampleContext db = new SampleContext(optionsBuilder.Options))
 			{
 				await db.Database.EnsureDeletedAsync();
@@ -38,17 +40,45 @@ namespace EF3.NoSQLApp
 				marioRossi.Address = new Address("Via Verdi, 24", 20121) { City = "Milano" };
 				#endregion
 
+				#region [Student2]
+				var giuseppeVerdi = new Student("2020-567");
+				giuseppeVerdi.Name = "Giuseppe";
+				giuseppeVerdi.Surname = "Verdi";
+				giuseppeVerdi.SetMail("giuseppe.verdi@unitest.it");
+				giuseppeVerdi.Address = new Address("Via Rossi, 44", 20121) { City = "Piacenza" };
+				#endregion
+
 				#region [Exam]
 				var exam = new Exam("Analisi1-2020-Completo", ExamType.ExamSession, new DateTimeOffset(2020, 06, 01, 09, 00, 00, TimeSpan.Zero));
 				exam.Classroom = "Aula 2B";
 				exam.AddStudent(marioRossi);
+				exam.AddStudent(giuseppeVerdi);
 				#endregion
 
 				#region [Course]
-				var teacher = "Mario Rossi";
+				var teacher = "Isaac Newton";
 				var analisi1 = new Course("Analisi 1", teacher, 12);
 				analisi1.AddExam(exam);
 				analisi1.ExtraCredits = new ExtraCredit
+				{
+					Credits = 10,
+					HoursSum = 150,
+					Name = "Workshop fisica"
+				};
+				#endregion
+
+
+				#region [ExamDeleted]
+				var examDeleted = new Exam("Fisica1-2020-Completo", ExamType.ExamSession, new DateTimeOffset(2020, 06, 01, 09, 00, 00, TimeSpan.Zero));
+				examDeleted.Classroom = "Aula 1B";
+				examDeleted.AddStudent(giuseppeVerdi);
+				#endregion
+
+				#region [CourseToDeleted]
+				var teacherDeleted = "Archimede";
+				var fisica1 = new Course("Fisica 1", teacherDeleted, 12);
+				fisica1.AddExam(examDeleted);
+				fisica1.ExtraCredits = new ExtraCredit
 				{
 					Credits = 10,
 					HoursSum = 150,
@@ -67,28 +97,33 @@ namespace EF3.NoSQLApp
 
 
 				db.Courses.Add(analisi1);
+				db.Courses.Add(fisica1);
 				await db.SaveChangesAsync();
 
 				// Print
-				PrintCourse(db.Courses);
+				await PrintCourse(db.Courses);
 
-				var course = await db.Courses.FindAsync(analisi1.Id);
+				var course = await db.Courses.FindAsync(fisica1.Id);
 				course.SetExpired();
 				await db.SaveChangesAsync();
 
-				PrintCourse(db.Courses);
-
+				await PrintCourse(db.Courses);
+				Console.Read();
 			}
 		}
 
-		private static void PrintCourse(DbSet<Course> courses)
+		private static async Task PrintCourse(DbSet<Course> courses)
 		{
-			foreach (var item in courses)
+			var coursesList = await courses.ToListAsync();
+			for (int i = 0; i < coursesList.Count(); i++)
 			{
-				Console.WriteLine($"Name: {item.Name}");
-				Console.WriteLine($"Id: {item.Id}");
-				Console.WriteLine($"CourseType: {item.CourseType}");
-				Console.WriteLine($"IsExpired: {item.IsExpired}");
+				var c = coursesList.ElementAt(i);
+				Console.WriteLine($"Item Number: {i + 1}");
+				Console.WriteLine($"Name: {c.Name}");
+				Console.WriteLine($"Id: {c.Id}");
+				Console.WriteLine($"CourseType: {c.CourseType}");
+				Console.WriteLine($"IsExpired: {c.IsExpired}");
+				Console.WriteLine("_________________________________");
 			}
 		}
 	}
