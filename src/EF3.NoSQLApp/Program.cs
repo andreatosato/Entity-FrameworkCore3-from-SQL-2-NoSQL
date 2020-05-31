@@ -1,7 +1,9 @@
 ﻿using EF3.EntityModels;
 using EF3.NoSQLContext;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Cosmos.Storage.Internal;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -108,6 +110,10 @@ namespace EF3.NoSQLApp
 				await db.SaveChangesAsync();
 
 				await PrintCourse(db.Courses);
+
+
+				await CosmosClientCourseAsync(db, course);
+				await CosmosClientStudentCollectionAsync(db);
 				Console.Read();
 			}
 		}
@@ -124,6 +130,54 @@ namespace EF3.NoSQLApp
 				Console.WriteLine($"CourseType: {c.CourseType}");
 				Console.WriteLine($"IsExpired: {c.IsExpired}");
 				Console.WriteLine("_________________________________");
+			}
+		}
+
+		private static async Task CosmosClientCourseAsync(SampleContext db, Course course)
+		{
+			var cosmosClient = db.Database.GetCosmosClient();
+			{
+				var database = cosmosClient.GetDatabase("sample-db");
+				var container = database.GetContainer("Courrrrse");
+
+				var resultSet = container.GetItemQueryIterator<JObject>(new QueryDefinition("select * from o"));
+				while (resultSet.HasMoreResults)
+				{
+					var coursesObject = await resultSet.ReadNextAsync();
+					foreach (var item in coursesObject.AsJEnumerable())
+					{
+						Console.WriteLine($"Next Course: {Environment.NewLine} {item}");
+						Console.WriteLine($"_____________________________________________");
+					}
+				}
+
+				var courseFromCosmos = await container.ReadItemAsync<dynamic>(course.Id.ToString(), PartitionKey.None);
+				Console.WriteLine($"Read From Cosmos Read Item Async: {Environment.NewLine} {courseFromCosmos.Resource}");
+				Console.WriteLine($"_____________________________________________");
+			}
+		}
+
+		private static async Task CosmosClientStudentCollectionAsync(SampleContext db)
+		{
+			var cosmosClient = db.Database.GetCosmosClient();
+			{
+				var database = cosmosClient.GetDatabase("sample-db");
+				var container = database.GetContainer("Student");
+
+				var resultSet = container.GetItemQueryIterator<JObject>(new QueryDefinition("select * from student"));
+				while (resultSet.HasMoreResults)
+				{
+					var coursesObject = await resultSet.ReadNextAsync();
+					foreach (var item in coursesObject.AsJEnumerable())
+					{
+						Console.WriteLine($"Next Student: {Environment.NewLine} {item}");
+						Console.WriteLine($"_____________________________________________");
+					}
+				}
+
+				var courseFromCosmos = await container.ReadItemAsync<StudentCollection>("StudentCollection|2020-1234", new PartitionKey("Rossi"));
+				Console.WriteLine($"Read From Cosmos Read Item Async: {Environment.NewLine} {System.Text.Json.JsonSerializer.Serialize(courseFromCosmos.Resource, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })}");
+				Console.WriteLine($"_____________________________________________");
 			}
 		}
 	}
