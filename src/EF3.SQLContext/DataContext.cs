@@ -42,6 +42,9 @@ namespace EF3.SQLContext
             modelBuilder.ApplyConfiguration(new ExamConfiguration());
             modelBuilder.ApplyConfiguration(new StudentConfiguration());
             modelBuilder.ApplyConfiguration(new TakenExamConfiguration());
+
+            // Configure entity filters
+            modelBuilder.Entity<Course>().HasQueryFilter(x => !x.IsExpired);
         }
     }
 }

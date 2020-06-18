@@ -43,7 +43,7 @@ namespace EF3.SQLApp
             context.Students.Add(marioRossi);
             context.Students.Add(marcoMinerva);
 
-            await context.SaveChangesAsync();
+            //await context.SaveChangesAsync();
         }
     }
 }
