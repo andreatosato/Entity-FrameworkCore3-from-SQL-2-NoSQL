@@ -45,26 +45,31 @@ namespace EF3.NoSQLContext.EntityBuilders
 				//.HasConversion(new EnumToStringConverter<ExamType>());
 				t.Property(e => e.ExamDate);
 
-				t.OwnsMany<Student>(s => s.Students, f =>
+				t.OwnsMany<StudentVote>(s => s.Students, f =>
 				{
-					f.Property(s => s.IdentificationNumber);
-					f.Property(e => e.CreateDate).HasField("_createDate");
-					// https://docs.microsoft.com/it-it/ef/core/modeling/backing-field?tabs=data-annotations
-					// .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
-					f.Property(e => e.UpdateDate).HasField("_updateDate");
-					f.WithOwner().HasPrincipalKey(c => c.Code);
+					f.WithOwner().HasPrincipalKey(r => r.Code);
 
-					// https://docs.microsoft.com/it-it/ef/core/modeling/owned-entities#implicit-keys
-					f.OwnsOne(a => a.Address,
-					a =>
+					f.OwnsOne(g => g.Student, k =>
 					{
-						a.ToJsonProperty("Indirizzi");
-						a.Property(c => c.Street).ToJsonProperty("Via");
-						a.Property(c => c.ZipCode);
+						k.Property(s => s.IdentificationNumber);
+						k.Property(e => e.CreateDate).HasField("_createDate");
+						// https://docs.microsoft.com/it-it/ef/core/modeling/backing-field?tabs=data-annotations
+						// .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
+						k.Property(e => e.UpdateDate).HasField("_updateDate");
 
-						// WARNING
-						a.WithOwner().HasPrincipalKey(r => r.IdentificationNumber);
+						// https://docs.microsoft.com/it-it/ef/core/modeling/owned-entities#implicit-keys
+						k.OwnsOne(a => a.Address,
+						a =>
+						{
+							a.ToJsonProperty("Indirizzi");
+							a.Property(c => c.Street).ToJsonProperty("Via");
+							a.Property(c => c.ZipCode);
+
+							// WARNING
+							a.WithOwner().HasPrincipalKey(r => r.IdentificationNumber);
+						});
 					});
+
 				});
 			});
 			

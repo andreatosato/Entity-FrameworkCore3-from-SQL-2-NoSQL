@@ -42,18 +42,32 @@ namespace EF3.NoSQLApp
 				#endregion
 
 				#region [Student2]
-				var giuseppeVerdi = new Student("2020-567");
-				giuseppeVerdi.Name = "Giuseppe";
-				giuseppeVerdi.Surname = "Verdi";
+				var giuseppeVerdi = new Student("2020-567")
+				{
+					Name = "Giuseppe",
+					Surname = "Verdi"
+				};
 				giuseppeVerdi.SetMail("giuseppe.verdi@unitest.it");
 				giuseppeVerdi.Address = new Address("Via Rossi, 44", 20121) { City = "Piacenza" };
 				#endregion
 
+				#region [Student]
+				var FrancescoTotti = new Student("2020-323232");
+				FrancescoTotti.Name = "Francesco";
+				FrancescoTotti.Surname = "Totti";
+				FrancescoTotti.SetMail("fra.Totti@unitest.it");
+				FrancescoTotti.Address = new Address("Via Lupa, 10", 20121) { City = "Roma" };
+				#endregion
+
 				#region [Exam]
-				var exam = new Exam("Analisi1-2020-Completo", ExamType.ExamSession, new DateTimeOffset(2020, 06, 01, 09, 00, 00, TimeSpan.Zero));
+				var exam = new Exam("Analisi1-2020-Completo", ExamType.Session, new DateTimeOffset(2020, 06, 01, 09, 00, 00, TimeSpan.Zero));
 				exam.Classroom = "Aula 2B";
 				exam.AddStudent(marioRossi);
+				exam.SetVote(marioRossi, 30, DateTime.Now);
 				exam.AddStudent(giuseppeVerdi);
+				exam.SetVote(giuseppeVerdi, 18, DateTime.Now);
+				exam.AddStudent(FrancescoTotti);
+				exam.SetVote(FrancescoTotti, 20, DateTime.Now);
 				#endregion
 
 				#region [Course]
@@ -68,11 +82,20 @@ namespace EF3.NoSQLApp
 				};
 				#endregion
 
+				db.Courses.Add(analisi1);
+				await db.SaveChangesAsync();
 
 				#region [ExamDeleted]
-				var examDeleted = new Exam("Fisica1-2020-Completo", ExamType.ExamSession, new DateTimeOffset(2020, 06, 01, 09, 00, 00, TimeSpan.Zero));
+				var examDeleted = new Exam("Fisica1-2020-Completo", ExamType.Session, new DateTimeOffset(2020, 06, 01, 09, 00, 00, TimeSpan.Zero));
 				examDeleted.Classroom = "Aula 1B";
+				
+				// WARNING
+				db.Entry(giuseppeVerdi).State = EntityState.Detached;
+				db.Entry(FrancescoTotti).State = EntityState.Detached;
+				// WARNING
+
 				examDeleted.AddStudent(giuseppeVerdi);
+				examDeleted.AddStudent(FrancescoTotti);
 				#endregion
 
 				#region [CourseToDeleted]
@@ -97,7 +120,7 @@ namespace EF3.NoSQLApp
 				#endregion
 
 
-				db.Courses.Add(analisi1);
+				
 				db.Courses.Add(fisica1);
 				await db.SaveChangesAsync();
 

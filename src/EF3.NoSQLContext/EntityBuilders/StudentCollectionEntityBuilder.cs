@@ -8,8 +8,8 @@ namespace EF3.NoSQLContext.EntityBuilders
 		public void Configure(EntityTypeBuilder<StudentCollection> builder)
 		{
 			builder.ToContainer("Student");
-			builder.HasKey(x => x.Freshman);
-			builder.Property(p => p.Freshman);
+			builder.HasKey(x => x.IdentificationNumber);
+			builder.Property(p => p.IdentificationNumber);
 			builder.HasPartitionKey(x => x.Surname);
 
 			builder.OwnsOne(a => a.Address,

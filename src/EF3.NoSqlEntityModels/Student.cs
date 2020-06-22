@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace EF3.NoSqlEntityModels
 {
+
+	// TODO: Extracredit metterli sullo studente come lista. (StudentCollection)
+
 	public class Student
 	{
 		private readonly DateTimeOffset _createDate;

@@ -7,12 +7,12 @@ namespace EF3.NoSQLContext
 {
 	public class StudentCollection
 	{
-		public StudentCollection(string freshman)
+		public StudentCollection(string identificationNumber)
 		{
-			Freshman = freshman;
+			IdentificationNumber = identificationNumber;
 		}
 
-		public string Freshman { get; }
+		public string IdentificationNumber { get; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string Email { get; private set; }
