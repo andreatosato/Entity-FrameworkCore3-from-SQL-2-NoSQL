@@ -24,7 +24,7 @@ namespace EF3.NoSqlEntityModels
 			if (!Exams.Any(x => x.Code == exam.Code))
 				Exams.Add(exam);
 		}
-		public ExtraCredit ExtraCredits { get; set; } = new ExtraCredit();
+		//public ExtraCredit ExtraCredits { get; set; } = new ExtraCredit();
 		public byte[] RowVersion { get; }
 		public void SetExpired()
 		{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace EF3.NoSqlEntityModels
@@ -22,6 +23,7 @@ namespace EF3.NoSqlEntityModels
 		public string Surname { get; set; }
 		public string Email { get; private set; }
 		public Address Address { get; set; }
+		public HashSet<ExtraCredit> ExtraCredits { get; set; } = new HashSet<ExtraCredit>();
 
 		public DateTimeOffset CreateDate => _createDate;
 		public DateTimeOffset UpdateDate => _updateDate;

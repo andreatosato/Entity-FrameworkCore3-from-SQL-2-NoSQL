@@ -39,6 +39,21 @@ namespace EF3.NoSQLApp
 				marioRossi.Surname = "Rossi";
 				marioRossi.SetMail("mario.rossi@unitest.it");
 				marioRossi.Address = new Address("Via Verdi, 24", 20121) { City = "Milano" };
+				marioRossi.ExtraCredits = new System.Collections.Generic.HashSet<ExtraCredit>{ 
+					new ExtraCredit
+					{
+						Credits = 10,
+						HoursSum = 150,
+						Name = "Workshop fisica"
+					},
+					new ExtraCredit
+					{
+						Credits = 2,
+						HoursSum = 16,
+						Name = "Workshop quantistica"
+					}
+				};
+
 				#endregion
 
 				#region [Student2]
@@ -74,12 +89,6 @@ namespace EF3.NoSQLApp
 				var teacher = "Isaac Newton";
 				var analisi1 = new Course("Analisi 1", teacher, 12);
 				analisi1.AddExam(exam);
-				analisi1.ExtraCredits = new ExtraCredit
-				{
-					Credits = 10,
-					HoursSum = 150,
-					Name = "Workshop fisica"
-				};
 				#endregion
 
 				db.Courses.Add(analisi1);
@@ -102,12 +111,6 @@ namespace EF3.NoSQLApp
 				var teacherDeleted = "Archimede";
 				var fisica1 = new Course("Fisica 1", teacherDeleted, 12);
 				fisica1.AddExam(examDeleted);
-				fisica1.ExtraCredits = new ExtraCredit
-				{
-					Credits = 10,
-					HoursSum = 150,
-					Name = "Workshop fisica"
-				};
 				#endregion
 
 				#region [StudentCollection]

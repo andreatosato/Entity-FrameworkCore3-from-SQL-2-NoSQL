@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
@@ -21,19 +22,6 @@ namespace EF3.NoSQLContext.EntityBuilders
 			builder.Property(x => x.Name);
 			builder.Property(x => x.Teacher);
 			builder.Property(x => x.CreditsNumber);
-
-			JsonSerializerOptions serializerOptions = new JsonSerializerOptions()
-			{
-				IgnoreNullValues = true,
-				PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-				WriteIndented = false
-			};
-			var converter = new ValueConverter<ExtraCredit, string>(
-				v => JsonSerializer.Serialize(v, serializerOptions),
-				v => JsonSerializer.Deserialize<ExtraCredit>(v, serializerOptions));
-			builder.Property(x => x.ExtraCredits)
-				   .HasConversion(converter);
-
 
 			builder.HasQueryFilter(t => t.IsExpired == false);
 			builder.OwnsMany<Exam>(e => e.Exams, t =>
@@ -68,6 +56,18 @@ namespace EF3.NoSQLContext.EntityBuilders
 							// WARNING
 							a.WithOwner().HasPrincipalKey(r => r.IdentificationNumber);
 						});
+
+						JsonSerializerOptions serializerOptions = new JsonSerializerOptions()
+						{
+							IgnoreNullValues = true,
+							PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+							WriteIndented = false
+						};
+						var converter = new ValueConverter<HashSet<ExtraCredit>, string>(
+							v => JsonSerializer.Serialize(v, serializerOptions),
+							v => JsonSerializer.Deserialize<HashSet<ExtraCredit>>(v, serializerOptions));
+						k.Property(x => x.ExtraCredits)
+						 .HasConversion(converter);
 					});
 
 				});
