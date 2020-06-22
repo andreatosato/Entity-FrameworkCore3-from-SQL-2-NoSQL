@@ -1,4 +1,4 @@
-﻿using EF3.EntityModels;
+﻿using EF3.NoSqlEntityModels;
 using EF3.NoSQLContext.EntityBuilders;
 using Microsoft.EntityFrameworkCore;
 

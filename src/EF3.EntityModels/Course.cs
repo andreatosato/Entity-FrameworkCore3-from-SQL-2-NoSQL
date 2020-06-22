@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EF3.EntityModels
+namespace EF3.NoSqlEntityModels
 {
 	public class Course
 	{

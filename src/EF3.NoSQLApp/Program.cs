@@ -1,4 +1,4 @@
-﻿using EF3.EntityModels;
+﻿using EF3.NoSqlEntityModels;
 using EF3.NoSQLContext;
 using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Sources;
 
 namespace EF3.NoSQLApp
 {

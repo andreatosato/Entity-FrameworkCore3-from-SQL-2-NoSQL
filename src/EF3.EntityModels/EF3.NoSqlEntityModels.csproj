@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>EF3.NoSqlEntityModels</AssemblyName>
+    <RootNamespace>EF3.NoSqlEntityModels</RootNamespace>
+  </PropertyGroup>
+
+</Project>
