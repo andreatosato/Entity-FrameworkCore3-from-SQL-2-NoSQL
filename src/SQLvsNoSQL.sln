@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF3.NoSqlEntityModels", "EF3.EntityModels\EF3.NoSqlEntityModels.csproj", "{8CE21315-33A7-4C8D-816B-63E4689BBF3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF3.NoSqlEntityModels", "EF3.NoSqlEntityModels\EF3.NoSqlEntityModels.csproj", "{8CE21315-33A7-4C8D-816B-63E4689BBF3E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF3.SQLContext", "EF3.SQLContext\EF3.SQLContext.csproj", "{81DDD474-B669-409B-B24C-BD64E06411E0}"
 EndProject
