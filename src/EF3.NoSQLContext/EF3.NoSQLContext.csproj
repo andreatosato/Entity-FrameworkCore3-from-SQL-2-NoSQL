@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EF3.EntityModels\EF3.EntityModels.csproj" />
+    <ProjectReference Include="..\EF3.EntityModels\EF3.NoSqlEntityModels.csproj" />
   </ItemGroup>
 
 </Project>

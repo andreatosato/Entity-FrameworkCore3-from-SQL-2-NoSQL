@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace EF3.EntityModels
+namespace EF3.NoSqlEntityModels
 {
 	public class Student
 	{
 		private readonly DateTimeOffset _createDate;
 		private readonly DateTimeOffset _updateDate;
-		public Student(string freshman)
+		public Student(string identificationNumber)
 		{
-			Freshman = freshman;
+			IdentificationNumber = identificationNumber;
 			_createDate = DateTimeOffset.UtcNow;
 			_updateDate = DateTimeOffset.UtcNow;
 		}
 
-		public string Freshman { get; }
+		public string IdentificationNumber { get; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string Email { get; private set; }
@@ -38,13 +38,13 @@ namespace EF3.EntityModels
 
 	public class Address
 	{
-		public Address(string street, int cap)
+		public Address(string street, int zipCode)
 		{
 			Street = street;
-			Cap = cap;
+			ZipCode = zipCode;
 		}
 		public string Street { get;  }
-		public int Cap { get; }
+		public int ZipCode { get; }
 		public string City { get; set; }
 	}
 }

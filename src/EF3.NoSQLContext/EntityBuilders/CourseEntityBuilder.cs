@@ -1,4 +1,4 @@
-﻿using EF3.EntityModels;
+﻿using EF3.NoSqlEntityModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -47,7 +47,7 @@ namespace EF3.NoSQLContext.EntityBuilders
 
 				t.OwnsMany<Student>(s => s.Students, f =>
 				{
-					f.Property(s => s.Freshman);
+					f.Property(s => s.IdentificationNumber);
 					f.Property(e => e.CreateDate).HasField("_createDate");
 					// https://docs.microsoft.com/it-it/ef/core/modeling/backing-field?tabs=data-annotations
 					// .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
@@ -60,10 +60,10 @@ namespace EF3.NoSQLContext.EntityBuilders
 					{
 						a.ToJsonProperty("Indirizzi");
 						a.Property(c => c.Street).ToJsonProperty("Via");
-						a.Property(c => c.Cap);
+						a.Property(c => c.ZipCode);
 
 						// WARNING
-						a.WithOwner().HasPrincipalKey(r => r.Freshman);
+						a.WithOwner().HasPrincipalKey(r => r.IdentificationNumber);
 					});
 				});
 			});

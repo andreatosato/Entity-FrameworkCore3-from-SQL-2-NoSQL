@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EF3.EntityModels
+namespace EF3.NoSqlEntityModels
 {
 	public class Exam
 	{
@@ -21,7 +21,7 @@ namespace EF3.EntityModels
 		public HashSet<Student> Students { get; private set; } = new HashSet<Student>();
 		public void AddStudent(Student student)
 		{
-			if(!Students.Any(x => x.Freshman == student.Freshman))
+			if(!Students.Any(x => x.IdentificationNumber == student.IdentificationNumber))
 				Students.Add(student);
 		}
 	}
