@@ -23,9 +23,8 @@ namespace EF3.SQLEntityModels
 
         public List<ExtraCredit> ExtraCredits { get; set; }
 
-        public Student(string identificationNumber)
+        public Student()
         {
-            IdentificationNumber = identificationNumber;
             CreateDate = DateTime.UtcNow;
         }
     }

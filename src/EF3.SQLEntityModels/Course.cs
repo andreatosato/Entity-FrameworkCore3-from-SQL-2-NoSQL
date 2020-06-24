@@ -18,13 +18,6 @@ namespace EF3.SQLEntityModels
         public ICollection<Exam> Exams { get; set; }
 
         public bool IsExpired { get; set; }
-
-        public Course(string name, string teacher, int credits)
-        {
-            Name = name;
-            Teacher = teacher;
-            Credits = credits;
-        }
     }
 
     public enum CourseType

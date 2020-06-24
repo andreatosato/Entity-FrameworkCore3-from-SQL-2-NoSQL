@@ -15,7 +15,7 @@ namespace EF3.SQLContext.Configurations
             builder.Property(x => x.Teacher).HasMaxLength(80).IsRequired();
             builder.Property(x => x.Type).HasConversion<string>().HasMaxLength(10).IsRequired();
 
-            builder.HasMany(x => x.Exams).WithOne(x => x.Course).IsRequired();
+            builder.HasMany(x => x.Exams).WithOne(x => x.Course).HasForeignKey(x => x.CourseId).IsRequired();
         }
     }
 }

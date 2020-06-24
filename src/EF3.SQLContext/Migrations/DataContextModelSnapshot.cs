@@ -25,7 +25,7 @@ namespace EF3.SQLContext.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CreditsNumber")
+                    b.Property<int>("Credits")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsExpired")

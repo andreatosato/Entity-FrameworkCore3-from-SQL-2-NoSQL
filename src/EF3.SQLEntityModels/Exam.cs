@@ -15,16 +15,11 @@ namespace EF3.SQLEntityModels
 
         public string Classroom { get; set; }
 
+        public Guid CourseId { get; set; }
+
         public Course Course { get; set; }
 
         public ICollection<TakenExam> TakenExams { get; set; }
-
-        public Exam(string code, ExamType type, DateTimeOffset date)
-        {
-            Code = code;
-            Type = type;
-            Date = date;
-        }
     }
 
     public enum ExamType

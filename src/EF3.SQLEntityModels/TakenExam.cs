@@ -6,7 +6,11 @@ namespace EF3.SQLEntityModels
     {
         public Guid Id { get; set; }
 
+        public Guid ExamId { get; set; }
+
         public Exam Exam { get; set; }
+
+        public Guid StudentId { get; set; }
 
         public Student Student { get; set; }
 

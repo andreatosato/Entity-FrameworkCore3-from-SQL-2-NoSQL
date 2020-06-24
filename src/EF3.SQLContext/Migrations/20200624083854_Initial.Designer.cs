@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF3.SQLContext.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200618105515_Initial")]
+    [Migration("20200624083854_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace EF3.SQLContext.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CreditsNumber")
+                    b.Property<int>("Credits")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsExpired")

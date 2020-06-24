@@ -11,8 +11,8 @@ namespace EF3.SQLContext.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.HasOne(x => x.Exam).WithMany(x => x.TakenExams).IsRequired();
-            builder.HasOne(x => x.Student).WithMany(t => t.TakenExams).IsRequired();
+            builder.HasOne(x => x.Exam).WithMany(x => x.TakenExams).HasForeignKey(x => x.ExamId).IsRequired();
+            builder.HasOne(x => x.Student).WithMany(t => t.TakenExams).HasForeignKey(x => x.StudentId).IsRequired();
         }
     }
 }
