@@ -15,8 +15,7 @@ namespace EF3.SQLApp
             await context.Database.MigrateAsync();
 
             await InitializeAsync(context);
-
-            var
+            //await TransactionSampleAsync(context);
         }
 
         private static async Task InitializeAsync(DataContext context)
@@ -145,6 +144,40 @@ namespace EF3.SQLApp
             context.TakenExams.Add(marioRossiAnalisiMatematica);
 
             await context.SaveChangesAsync();
+        }
+
+        private static async Task TransactionSampleAsync(DataContext context)
+        {
+            var strategy = context.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                using var transaction = await context.Database.BeginTransactionAsync();
+
+                var calcoloNumerico = new Course
+                {
+                    Name = "Calcolo numerico",
+                    Teacher = "Topolino",
+                    Credits = 6,
+                    Type = CourseType.Mandatory
+                };
+
+                context.Courses.Add(calcoloNumerico);
+                await context.SaveChangesAsync();
+
+                var calcoloNumericoExam = new Exam
+                {
+                    Classroom = "Aula F1",
+                    Code = "CN",
+                    CourseId = calcoloNumerico.Id,
+                    Date = new DateTime(2020, 5, 29, 9, 0, 0),
+                    Type = ExamType.Final
+                };
+
+                context.Exams.Add(calcoloNumericoExam);
+                await context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            });
         }
     }
 }
